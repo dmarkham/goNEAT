@@ -1,15 +1,16 @@
 package genetics
 
 import (
-	"github.com/yaricom/goNEAT/neat/utils"
-	"github.com/yaricom/goNEAT/neat/network"
-	"github.com/yaricom/goNEAT/neat"
-	"math/rand"
-	"io"
-	"fmt"
 	"errors"
+	"fmt"
+	"io"
 	"math"
+	"math/rand"
 	"reflect"
+
+	"github.com/yaricom/goNEAT/neat"
+	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/yaricom/goNEAT/neat/utils"
 )
 
 // A Genome is the primary source of genotype information used to create  a phenotype.
@@ -29,49 +30,49 @@ import (
 // population, and the list of Genes provide an evolutionary history of innovation and link-building.
 type Genome struct {
 	// The genome ID
-	Id           int
+	Id int
 	// The parameters conglomerations
-	Traits       []*neat.Trait
+	Traits []*neat.Trait
 	// List of NNodes for the Network
-	Nodes        []*network.NNode
+	Nodes []*network.NNode
 	// List of innovation-tracking genes
-	Genes        []*Gene
+	Genes []*Gene
 	// List of MIMO control genes
 	ControlGenes []*MIMOControlGene
 
 	// Allows Genome to be matched with its Network
-	Phenotype    *network.Network
+	Phenotype *network.Network
 }
 
 // Constructor which takes full genome specs and puts them into the new one
 func NewGenome(id int, t []*neat.Trait, n []*network.NNode, g []*Gene) *Genome {
 	return &Genome{
-		Id:id,
-		Traits:t,
-		Nodes:n,
-		Genes:g,
+		Id:     id,
+		Traits: t,
+		Nodes:  n,
+		Genes:  g,
 	}
 }
 
 // Constructs new modular genome
 func NewModularGenome(id int, t []*neat.Trait, n []*network.NNode, g []*Gene, mimoG []*MIMOControlGene) *Genome {
 	return &Genome{
-		Id:id,
-		Traits:t,
-		Nodes:n,
-		Genes:g,
-		ControlGenes:mimoG,
+		Id:           id,
+		Traits:       t,
+		Nodes:        n,
+		Genes:        g,
+		ControlGenes: mimoG,
 	}
 }
 
 // This special constructor creates a Genome with in inputs, out outputs, n out of nmax hidden units, and random
 // connectivity.  If rec is true then recurrent connections will be included. The last input is a bias
 // link_prob is the probability of a link. The created genome is not modular.
-func newGenomeRand(new_id, in, out, n, nmax int, recurrent bool, link_prob float64) *Genome {
+func NewGenomeRand(new_id, in, out, n, nmax int, recurrent bool, link_prob float64) *Genome {
 	total_nodes := in + out + nmax
 	matrix_dim := total_nodes * total_nodes
 	// The connection matrix which will be randomized
-	cm := make([]bool, matrix_dim)  //Dimension the connection matrix
+	cm := make([]bool, matrix_dim) //Dimension the connection matrix
 
 	// No nodes above this number for this genome
 	max_node := in + n
@@ -89,10 +90,10 @@ func newGenomeRand(new_id, in, out, n, nmax int, recurrent bool, link_prob float
 
 	// Create empty genome
 	gnome := Genome{
-		Id:new_id,
-		Traits:[]*neat.Trait{new_trait},
-		Nodes:make([]*network.NNode, 0),
-		Genes:make([]*Gene, 0),
+		Id:     new_id,
+		Traits: []*neat.Trait{new_trait},
+		Nodes:  make([]*network.NNode, 0),
+		Genes:  make([]*Gene, 0),
 	}
 
 	// Step through the connection matrix, randomly assigning bits
@@ -112,7 +113,7 @@ func newGenomeRand(new_id, in, out, n, nmax int, recurrent bool, link_prob float
 	}
 
 	// Build the hidden nodes
-	for ncount := in + 1; ncount <= in + n; ncount++ {
+	for ncount := in + 1; ncount <= in+n; ncount++ {
 		new_node = network.NewNNode(ncount, network.HiddenNeuron)
 		new_node.Trait = new_trait
 		gnome.Nodes = append(gnome.Nodes, new_node)
@@ -309,7 +310,7 @@ func (g *Genome) getLastNodeId() (int, error) {
 	if len(g.Nodes) == 0 {
 		return -1, errors.New("Genome has no nodes")
 	}
-	id := g.Nodes[len(g.Nodes) - 1].Id
+	id := g.Nodes[len(g.Nodes)-1].Id
 	// check control genes
 	for _, cg := range g.ControlGenes {
 		if cg.ControlNode.Id > id {
@@ -324,13 +325,13 @@ func (g *Genome) getNextGeneInnovNum() (int64, error) {
 	inn_num := int64(0)
 	// check connection genes
 	if len(g.Genes) > 0 {
-		inn_num = g.Genes[len(g.Genes) - 1].InnovationNum
+		inn_num = g.Genes[len(g.Genes)-1].InnovationNum
 	} else {
 		return -1, errors.New("Genome has no Genes")
 	}
 	// check control genes if any
 	if len(g.ControlGenes) > 0 {
-		c_inn_num := g.ControlGenes[len(g.ControlGenes) - 1].InnovationNum
+		c_inn_num := g.ControlGenes[len(g.ControlGenes)-1].InnovationNum
 		if c_inn_num > inn_num {
 			inn_num = c_inn_num
 		}
@@ -577,7 +578,6 @@ func (g *Genome) verify() (bool, error) {
 		return false, errors.New("Genome has no Traits")
 	}
 
-
 	// Check each gene's nodes
 	for _, gn := range g.Genes {
 		inode := gn.Link.InNode
@@ -633,10 +633,10 @@ func (g *Genome) verify() (bool, error) {
 }
 
 // Inserts a NNode into a given ordered list of NNodes in ascending order by NNode ID
-func nodeInsert(nodes[]*network.NNode, n *network.NNode) []*network.NNode {
+func nodeInsert(nodes []*network.NNode, n *network.NNode) []*network.NNode {
 	index := len(nodes)
 	// quick insert at the end or beginning (we assume that nodes is already ordered)
-	if index == 0 || n.Id >= nodes[index - 1].Id {
+	if index == 0 || n.Id >= nodes[index-1].Id {
 		// append last
 		nodes = append(nodes, n)
 		return nodes
@@ -654,7 +654,7 @@ func nodeInsert(nodes[]*network.NNode, n *network.NNode) []*network.NNode {
 			break
 		}
 	}
-	first := make([]*network.NNode, index + 1)
+	first := make([]*network.NNode, index+1)
 	copy(first, nodes[0:index])
 	first[index] = n
 	second := nodes[index:]
@@ -665,10 +665,10 @@ func nodeInsert(nodes[]*network.NNode, n *network.NNode) []*network.NNode {
 
 // Inserts a new gene that has been created through a mutation in the
 // *correct order* into the list of genes in the genome, i.e. ordered by innovation number ascending
-func geneInsert(genes[]*Gene, g *Gene) []*Gene {
+func geneInsert(genes []*Gene, g *Gene) []*Gene {
 	index := len(genes) // to make sure that greater IDs appended at the end
 	// quick insert at the end or beginning (we assume that nodes is already ordered)
-	if index == 0 || g.InnovationNum >= genes[index - 1].InnovationNum {
+	if index == 0 || g.InnovationNum >= genes[index-1].InnovationNum {
 		// append last
 		genes = append(genes, g)
 		return genes
@@ -687,7 +687,7 @@ func geneInsert(genes[]*Gene, g *Gene) []*Gene {
 		}
 	}
 
-	first := make([]*Gene, index + 1)
+	first := make([]*Gene, index+1)
 	copy(first, genes[0:index])
 	first[index] = g
 	second := genes[index:]
@@ -786,7 +786,6 @@ func (g *Genome) mutateConnectSensors(pop *Population, context *neat.NeatContext
 				// read next innovation id
 				next_innov_id := pop.getNextInnovationNumberAndIncrement()
 
-
 				// Create the new gene
 				new_gene = NewGeneWithTrait(g.Traits[trait_num], new_weight, sensor, output,
 					false, next_innov_id, new_weight)
@@ -858,18 +857,18 @@ func (g *Genome) mutateAddLink(pop *Population, context *neat.NeatContext) (bool
 				loop_recur = true
 			}
 			if loop_recur {
-				node_num_1 = first_non_sensor + rand.Intn(nodes_len - first_non_sensor) // only NON SENSOR
+				node_num_1 = first_non_sensor + rand.Intn(nodes_len-first_non_sensor) // only NON SENSOR
 				node_num_2 = node_num_1
 			} else {
 				for node_num_1 == node_num_2 {
 					node_num_1 = rand.Intn(nodes_len)
-					node_num_2 = first_non_sensor + rand.Intn(nodes_len - first_non_sensor) // only NON SENSOR
+					node_num_2 = first_non_sensor + rand.Intn(nodes_len-first_non_sensor) // only NON SENSOR
 				}
 			}
 		} else {
 			for node_num_1 == node_num_2 {
 				node_num_1 = rand.Intn(nodes_len)
-				node_num_2 = first_non_sensor + rand.Intn(nodes_len - first_non_sensor) // only NON SENSOR
+				node_num_2 = first_non_sensor + rand.Intn(nodes_len-first_non_sensor) // only NON SENSOR
 			}
 		}
 
@@ -888,8 +887,8 @@ func (g *Genome) mutateAddLink(pop *Population, context *neat.NeatContext) (bool
 					gene.Link.OutNode.Id == node_2.Id &&
 					gene.Link.IsRecurrent == do_recur {
 					// link already exists
-					link_exists = true;
-					break;
+					link_exists = true
+					break
 				}
 
 			}
@@ -906,7 +905,7 @@ func (g *Genome) mutateAddLink(pop *Population, context *neat.NeatContext) (bool
 			// NOTE: A loop doesn't really matter - just debug output it
 			if count > thresh {
 				neat.DebugLog(
-					fmt.Sprintf("GENOME: LOOP DETECTED DURING A RECURRENCY CHECK -> " +
+					fmt.Sprintf("GENOME: LOOP DETECTED DURING A RECURRENCY CHECK -> "+
 						"node in: %s <-> node out: %s", node_1.PhenotypeAnalogue, node_2.PhenotypeAnalogue))
 			}
 
@@ -1024,7 +1023,7 @@ func (g *Genome) mutateAddNode(pop *Population, context *neat.NeatContext) (bool
 		return false, nil
 	}
 
-	gene.IsEnabled = false;
+	gene.IsEnabled = false
 
 	// Extract the link
 	link := gene.Link
@@ -1047,12 +1046,12 @@ func (g *Genome) mutateAddNode(pop *Population, context *neat.NeatContext) (bool
 	innovation_found := false
 	for _, inn := range pop.Innovations {
 		/* We check to see if an innovation already occurred that was:
-		 	-A new node
-		 	-Stuck between the same nodes as were chosen for this mutation
-		 	-Splitting the same gene as chosen for this mutation
-		 If so, we know this mutation is not a novel innovation in this generation
-		 so we make it match the original, identical mutation which occurred
-		 elsewhere in the population by coincidence */
+			-A new node
+			-Stuck between the same nodes as were chosen for this mutation
+			-Splitting the same gene as chosen for this mutation
+		If so, we know this mutation is not a novel innovation in this generation
+		so we make it match the original, identical mutation which occurred
+		elsewhere in the population by coincidence */
 		if inn.innovationType == newNodeInnType &&
 			inn.InNodeId == in_node.Id &&
 			inn.OutNodeId == out_node.Id &&
@@ -1091,12 +1090,12 @@ func (g *Genome) mutateAddNode(pop *Population, context *neat.NeatContext) (bool
 		// get the next innovation id for gene 1
 		gene_innov_1 := pop.getNextInnovationNumberAndIncrement()
 		// create gene with the current gene innovation
-		new_gene_1 = NewGeneWithTrait(trait, 1.0, in_node, new_node, link.IsRecurrent, gene_innov_1, 0);
+		new_gene_1 = NewGeneWithTrait(trait, 1.0, in_node, new_node, link.IsRecurrent, gene_innov_1, 0)
 
 		// get the next innovation id for gene 2
 		gene_innov_2 := pop.getNextInnovationNumberAndIncrement()
 		// create the second gene with this innovation incremented
-		new_gene_2 = NewGeneWithTrait(trait, old_weight, new_node, out_node, false, gene_innov_2, 0);
+		new_gene_2 = NewGeneWithTrait(trait, old_weight, new_node, out_node, false, gene_innov_2, 0)
 
 		// Store innovation
 		innov := NewInnovationForNode(in_node.Id, out_node.Id, gene_innov_1, gene_innov_2, new_node.Id, gene.InnovationNum)
@@ -1113,7 +1112,6 @@ func (g *Genome) mutateAddNode(pop *Population, context *neat.NeatContext) (bool
 				innovation_found, g.Id, new_node.Id, g))
 		return false, nil
 	}
-
 
 	// Now add the new NNode and new Genes to the Genome
 	g.Genes = geneInsert(g.Genes, new_gene_1)
@@ -1152,7 +1150,7 @@ func (g *Genome) mutateLinkWeights(power, rate float64, mutation_type mutatorTyp
 			gauss_point = 0.3
 			cold_gauss_point = 0.1
 		} else if gene_total >= 10.0 && num > end_part {
-			gauss_point = 0.5  // Mutate by modification % of connections
+			gauss_point = 0.5      // Mutate by modification % of connections
 			cold_gauss_point = 0.3 // Mutate the rest by replacement % of the time
 		} else {
 			// Half the time don't do any cold mutations
@@ -1264,6 +1262,7 @@ func (g *Genome) mutateToggleEnable(times int) (bool, error) {
 	}
 	return true, nil
 }
+
 // Finds first disabled gene and enable it
 func (g *Genome) mutateGeneReenable() (bool, error) {
 	if len(g.Genes) == 0 {
@@ -1309,7 +1308,7 @@ func (g *Genome) mutateAllNonstructural(context *neat.NeatContext) (bool, error)
 
 	if err == nil && rand.Float64() < context.MutateGeneReenableProb {
 		// mutate gene reenable
-		res, err = g.mutateGeneReenable();
+		res, err = g.mutateGeneReenable()
 	}
 	return res, err
 }
@@ -1425,13 +1424,13 @@ func (gen *Genome) mateMultipoint(og *Genome, genomeid int, fitness1, fitness2 f
 		// Check to see if the chosen gene conflicts with an already chosen gene i.e. do they represent the same link
 		for _, new_gene := range new_genes {
 			if new_gene.Link.IsEqualGenetically(chosen_gene.Link) {
-				skip = true;
-				break;
+				skip = true
+				break
 			}
 		}
 
 		// Now add the chosen gene to the baby
-		if (!skip) {
+		if !skip {
 			// Check for the nodes, add them if not in the baby Genome already
 			in_node := chosen_gene.Link.InNode
 			out_node := chosen_gene.Link.OutNode
@@ -1475,7 +1474,6 @@ func (gen *Genome) mateMultipoint(og *Genome, genomeid int, fitness1, fitness2 f
 				new_nodes = nodeInsert(new_nodes, new_out_node)
 				child_nodes_map[new_out_node.Id] = new_out_node
 			}
-
 
 			// Add the Gene
 			gene_trait_num := 0
@@ -1522,7 +1520,6 @@ func (gen *Genome) mateMultipointAvg(og *Genome, genomeid int, fitness1, fitness
 		return nil, err
 	}
 
-
 	// The new genes and nodes created
 	new_genes := make([]*Gene, 0)
 	new_nodes := make([]*network.NNode, 0)
@@ -1555,7 +1552,7 @@ func (gen *Genome) mateMultipointAvg(og *Genome, genomeid int, fitness1, fitness
 	}
 
 	// Set up the avgene - this Gene is used to hold the average of the two genes to be averaged
-	avg_gene := NewGeneWithTrait(nil, 0.0, nil, nil, false, 0, 0.0);
+	avg_gene := NewGeneWithTrait(nil, 0.0, nil, nil, false, 0, 0.0)
 
 	// Now loop through the Genes of each parent
 	i1, i2, size1, size2 := 0, 0, len(gen.Genes), len(og.Genes)
@@ -1640,12 +1637,12 @@ func (gen *Genome) mateMultipointAvg(og *Genome, genomeid int, fitness1, fitness
 		// Check to see if the chosen gene conflicts with an already chosen gene i.e. do they represent the same link
 		for _, new_gene := range new_genes {
 			if new_gene.Link.IsEqualGenetically(chosen_gene.Link) {
-				skip = true;
-				break;
+				skip = true
+				break
 			}
 		}
 
-		if (!skip) {
+		if !skip {
 			// Now add the chosen gene to the baby
 
 			// Check for the nodes, add them if not in the baby Genome already
@@ -1759,7 +1756,7 @@ func (gen *Genome) mateSinglepoint(og *Genome, genomeid int) (*Genome, error) {
 	}
 
 	// Set up the avg_gene - this Gene is used to hold the average of the two genes to be averaged
-	avg_gene := NewGeneWithTrait(nil, 0.0, nil, nil, false, 0, 0.0);
+	avg_gene := NewGeneWithTrait(nil, 0.0, nil, nil, false, 0, 0.0)
 
 	p1stop, p2stop, stopper, crosspoint := 0, 0, 0, 0
 	var p1genes, p2genes []*Gene
@@ -1785,7 +1782,7 @@ func (gen *Genome) mateSinglepoint(og *Genome, genomeid int) (*Genome, error) {
 	// Now move through the Genes of each parent until both genomes end
 	for i2 < stopper {
 		skip := false
-		avg_gene.IsEnabled = true  // Default to true
+		avg_gene.IsEnabled = true // Default to true
 		if i1 == p1stop {
 			chosen_gene = p2genes[i2]
 			i2++
@@ -1843,7 +1840,7 @@ func (gen *Genome) mateSinglepoint(og *Genome, genomeid int) (*Genome, error) {
 				i2++
 				gene_counter++
 			} else if p1innov < p2innov {
-				if (gene_counter < crosspoint) {
+				if gene_counter < crosspoint {
 					chosen_gene = p1gene
 					i1++
 					gene_counter++
@@ -1862,13 +1859,13 @@ func (gen *Genome) mateSinglepoint(og *Genome, genomeid int) (*Genome, error) {
 		// Check to see if the chosen gene conflicts with an already chosen gene i.e. do they represent the same link
 		for _, new_gene := range new_genes {
 			if new_gene.Link.IsEqualGenetically(chosen_gene.Link) {
-				skip = true;
-				break;
+				skip = true
+				break
 			}
 		}
 
 		//Now add the chosen gene to the baby
-		if (!skip) {
+		if !skip {
 			// Check for the nodes, add them if not in the baby Genome already
 			in_node := chosen_gene.Link.InNode
 			out_node := chosen_gene.Link.OutNode
@@ -1921,7 +1918,7 @@ func (gen *Genome) mateSinglepoint(og *Genome, genomeid int) (*Genome, error) {
 			}
 			new_gene := NewGeneCopy(chosen_gene, new_traits[gene_trait_num], new_in_node, new_out_node)
 			new_genes = append(new_genes, new_gene)
-		}// end SKIP
+		} // end SKIP
 	} // end FOR
 	// check if parent's MIMO control genes should be inherited
 	if len(gen.ControlGenes) != 0 || len(og.ControlGenes) != 0 {
@@ -2058,12 +2055,11 @@ func (g *Genome) compatLinear(og *Genome, context *neat.NeatContext) float64 {
 	// Return the compatibility number using compatibility formula
 	// Note that mut_diff_total/num_matching gives the AVERAGE difference between mutation_nums for any two matching
 	// Genes in the Genome. Look at disjointedness and excess in the absolute (ignoring size)
-	comp := context.DisjointCoeff * num_disjoint + context.ExcessCoeff * num_excess +
-		context.MutdiffCoeff * (mut_diff_total / num_matching)
+	comp := context.DisjointCoeff*num_disjoint + context.ExcessCoeff*num_excess +
+		context.MutdiffCoeff*(mut_diff_total/num_matching)
 
 	return comp
 }
-
 
 // The faster version of genome compatibility checking. The compatibility check will start from the end of genome where
 // the most of disparities are located - the novel genes with greater innovation ID are always attached at the end (see geneInsert).
@@ -2095,7 +2091,7 @@ func (g *Genome) compatFast(og *Genome, context *neat.NeatContext) float64 {
 
 	excess_genes_switch, num_matching := 0, 0
 	compatibility, mut_diff := 0.0, 0.0
-	list1_idx, list2_idx := list1_count - 1, list2_count - 1
+	list1_idx, list2_idx := list1_count-1, list2_count-1
 	gene1, gene2 := g.Genes[list1_idx], og.Genes[list2_idx]
 
 	for {
@@ -2135,7 +2131,7 @@ func (g *Genome) compatFast(og *Genome, context *neat.NeatContext) float64 {
 			if excess_genes_switch == 3 {
 				// No more excess genes. Therefore this mismatch is disjoint.
 				compatibility += context.DisjointCoeff
-			} else if (excess_genes_switch == 1) {
+			} else if excess_genes_switch == 1 {
 				// Another excess gene on genome 1.
 				compatibility += context.ExcessCoeff
 			} else if excess_genes_switch == 2 {
@@ -2157,14 +2153,14 @@ func (g *Genome) compatFast(og *Genome, context *neat.NeatContext) float64 {
 		// been exhausted.
 		if list1_idx < 0 {
 			// All remaining list2 genes are disjoint.
-			compatibility += float64(list2_idx + 1) * context.DisjointCoeff
+			compatibility += float64(list2_idx+1) * context.DisjointCoeff
 			break
 
 		}
 
 		if list2_idx < 0 {
 			// All remaining list1 genes are disjoint.
-			compatibility += float64(list1_idx + 1) * context.DisjointCoeff
+			compatibility += float64(list1_idx+1) * context.DisjointCoeff
 			break
 		}
 
@@ -2175,4 +2171,3 @@ func (g *Genome) compatFast(og *Genome, context *neat.NeatContext) float64 {
 	}
 	return compatibility
 }
-

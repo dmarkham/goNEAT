@@ -64,7 +64,7 @@ func TestNewPopulation(t *testing.T) {
 		CompatThreshold:0.5,
 		PopSize:10,
 	}
-	gen := newGenomeRand(1, in, out, n, nmax, recurrent, link_prob)
+	gen := NewGenomeRand(1, in, out, n, nmax, recurrent, link_prob)
 
 	pop, err := NewPopulation(gen, &conf)
 	if err != nil {

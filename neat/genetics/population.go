@@ -85,7 +85,7 @@ func NewPopulationRandom(in, out, nmax int, recurrent bool, link_prob float64, c
 
 	pop := newPopulation()
 	for count := 0; count < context.PopSize; count++ {
-		gen := newGenomeRand(count, in, out, rand.Intn(nmax), nmax, recurrent, link_prob)
+		gen := NewGenomeRand(count, in, out, rand.Intn(nmax), nmax, recurrent, link_prob)
 		org, err := NewOrganism(0.0, gen, 1)
 		if err != nil {
 			return nil, err
