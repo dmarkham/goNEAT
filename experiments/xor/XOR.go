@@ -6,12 +6,12 @@
 package xor
 
 import (
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 	"os"
 	"fmt"
-	"github.com/yaricom/goNEAT/neat/genetics"
+	"github.com/dmarkham/goNEAT/neat/genetics"
 	"math"
-	"github.com/yaricom/goNEAT/experiments"
+	"github.com/dmarkham/goNEAT/experiments"
 )
 
 // The precision to use for XOR evaluation, i.e. one is x > 1 - precision and zero is x < precision

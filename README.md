@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/yaricom/goNEAT.svg?branch=master)](https://travis-ci.org/yaricom/goNEAT) [![GoDoc](https://godoc.org/github.com/yaricom/goNEAT/neat?status.svg)](https://godoc.org/github.com/yaricom/goNEAT/neat)
+[![Build Status](https://travis-ci.org/dmarkham/goNEAT.svg?branch=master)](https://travis-ci.org/dmarkham/goNEAT) [![GoDoc](https://godoc.org/github.com/dmarkham/goNEAT/neat?status.svg)](https://godoc.org/github.com/dmarkham/goNEAT/neat)
 
 ## Overview
 This repository provides implementation of [NeuroEvolution of Augmenting Topologies (NEAT)][1] method written in Go language.
@@ -15,7 +15,7 @@ The source code written and compiled against GO 1.9.x.
 Make sure that you have at least GO 1.8.x. environment installed onto your system and execute following command:
 ```bash
 
-go get github.com/yaricom/goNEAT
+go get github.com/dmarkham/goNEAT
 ```
 
 ## Performance Evaluations
@@ -40,7 +40,7 @@ ability of NEAT to grow new hidden unit necessary for solving XOR problem.
 To run this experiment execute following commands:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/xor -context ./data/xor.neat -genome ./data/xorstartgenes -experiment XOR
 
 ```
@@ -84,7 +84,7 @@ need hidden nodes, but also to build missed connections between input nodes and 
 To run this experiment execute following commands:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/xor_disconnected -context ./data/xor.neat -genome ./data/xordisconnectedstartgenes -experiment XOR
 
 ```
@@ -134,7 +134,7 @@ steps (10’000 simulated seconds).
 To run this experiment with 150 population size execute following commands:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/pole1 -context ./data/pole1_150.neat -genome ./data/pole1startgenes -experiment cart_pole
 
 ```
@@ -145,7 +145,7 @@ organisms. The results of experiment execution will be saved in ./out directory 
 To run this experiment with 1’000 population size execute following commands:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/pole1 -context ./data/pole1_1000.neat -genome ./data/pole1startgenes -experiment cart_pole
 
 ```
@@ -216,7 +216,7 @@ winner solution will be determined as the one which is able to perform double po
 To run experiment execute following command:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/pole2_markov -context ./data/pole2_markov.neat -genome ./data/pole2_markov_startgenes -experiment cart_2pole_markov
 
 ```
@@ -265,7 +265,7 @@ is defined as a solution if it reaches a generalization score of 200 or more.
 To run experiment execute following command:
 ```bash
 
-cd $GOPATH/src/github.com/yaricom/goNEAT
+cd $GOPATH/src/github.com/dmarkham/goNEAT
 go run executor.go -out ./out/pole2_non-markov -context ./data/pole2_non-markov.neat -genome ./data/pole2_non-markov_startgenes -experiment cart_2pole_non-markov
 
 ```
@@ -327,5 +327,5 @@ This source code maintained and managed by [Iaroslav Omelianenko][3]
 [2]:http://eplex.cs.ucf.edu/neat_software/
 [3]:https://io42.space
 
-[single_pole-balancing_scheme]: https://github.com/yaricom/goNEAT/blob/master/contents/single_pole-balancing.jpg "The single pole-balancing experimental setup"
-[double_pole-balancing_scheme]: https://github.com/yaricom/goNEAT/blob/master/contents/double_pole-balancing.png "The double pole-balancing experimental setup"
+[single_pole-balancing_scheme]: https://github.com/dmarkham/goNEAT/blob/master/contents/single_pole-balancing.jpg "The single pole-balancing experimental setup"
+[double_pole-balancing_scheme]: https://github.com/dmarkham/goNEAT/blob/master/contents/double_pole-balancing.png "The double pole-balancing experimental setup"

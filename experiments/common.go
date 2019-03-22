@@ -2,8 +2,8 @@
 package experiments
 
 import (
-	"github.com/yaricom/goNEAT/neat/genetics"
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat/genetics"
+	"github.com/dmarkham/goNEAT/neat"
 	"fmt"
 	"time"
 	"os"

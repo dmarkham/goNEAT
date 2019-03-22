@@ -3,10 +3,10 @@ package pole
 import (
 	"testing"
 	"os"
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 	"fmt"
-	"github.com/yaricom/goNEAT/neat/genetics"
-	"github.com/yaricom/goNEAT/experiments"
+	"github.com/dmarkham/goNEAT/neat/genetics"
+	"github.com/dmarkham/goNEAT/experiments"
 	"math/rand"
 )
 

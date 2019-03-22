@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 	"errors"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat/utils"
 )
 
 // The connection descriptor for fast network

@@ -3,11 +3,11 @@ package genetics
 import (
 	"testing"
 	"strings"
-	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/neat/network"
 	"fmt"
 	"os"
-	"github.com/yaricom/goNEAT/neat"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat/utils"
 )
 
 func TestPlainGenomeReader_Read(t *testing.T) {

@@ -1,9 +1,9 @@
 package genetics
 
 import (
-	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/neat/network"
 	"fmt"
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 )
 
 // The Gene class in this system specifies a "Connection Gene."

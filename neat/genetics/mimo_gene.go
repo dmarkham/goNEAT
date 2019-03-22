@@ -1,7 +1,7 @@
 package genetics
 
 import (
-	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/neat/network"
 	"fmt"
 )
 

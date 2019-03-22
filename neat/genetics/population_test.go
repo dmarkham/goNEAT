@@ -2,7 +2,7 @@ package genetics
 
 import (
 	"testing"
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 	"math/rand"
 	"strings"
 	"bytes"

@@ -1,12 +1,12 @@
 package pole
 
 import (
-	"github.com/yaricom/goNEAT/experiments"
-	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/experiments"
+	"github.com/dmarkham/goNEAT/neat/network"
 	"fmt"
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 	"math"
-	"github.com/yaricom/goNEAT/neat/genetics"
+	"github.com/dmarkham/goNEAT/neat/genetics"
 	"os"
 	"sort"
 )

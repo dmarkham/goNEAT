@@ -5,7 +5,7 @@ import (
 	"math"
 	"fmt"
 	"errors"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat/utils"
 )
 
 var (

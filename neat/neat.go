@@ -9,7 +9,7 @@ import (
 	"os"
 	"github.com/spf13/viper"
 	"errors"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat/utils"
 	"strings"
 	"strconv"
 )

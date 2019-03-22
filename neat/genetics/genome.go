@@ -8,9 +8,9 @@ import (
 	"math/rand"
 	"reflect"
 
-	"github.com/yaricom/goNEAT/neat"
-	"github.com/yaricom/goNEAT/neat/network"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/neat/utils"
 )
 
 // A Genome is the primary source of genotype information used to create  a phenotype.

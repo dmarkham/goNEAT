@@ -2,7 +2,7 @@ package network
 
 import (
 	"testing"
-	"github.com/yaricom/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat/utils"
 )
 
 func buildNetwork() *Network {

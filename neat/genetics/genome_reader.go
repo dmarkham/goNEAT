@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"gopkg.in/yaml.v2"
 	"github.com/spf13/cast"
-	"github.com/yaricom/goNEAT/neat"
-	"github.com/yaricom/goNEAT/neat/utils"
-	"github.com/yaricom/goNEAT/neat/network"
+	"github.com/dmarkham/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat/utils"
+	"github.com/dmarkham/goNEAT/neat/network"
 )
 
 

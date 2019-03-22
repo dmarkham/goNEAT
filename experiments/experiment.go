@@ -3,7 +3,7 @@ package experiments
 import (
 	"time"
 	"sort"
-	"github.com/yaricom/goNEAT/neat/genetics"
+	"github.com/dmarkham/goNEAT/neat/genetics"
 	"io"
 	"encoding/gob"
 	"fmt"

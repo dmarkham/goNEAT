@@ -1,7 +1,7 @@
 package genetics
 
 import (
-	"github.com/yaricom/goNEAT/neat"
+	"github.com/dmarkham/goNEAT/neat"
 	"sort"
 	"fmt"
 	"errors"
